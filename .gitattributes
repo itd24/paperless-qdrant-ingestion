@@ -1,0 +1,2 @@
+# Keep line endings stable: PowerShell is fine with LF and the containers are Linux.
+* text=auto eol=lf

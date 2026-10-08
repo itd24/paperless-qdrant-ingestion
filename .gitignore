@@ -1,0 +1,10 @@
+# Worker checkpoint and HF tokenizer cache - runtime state, never committed.
+data/
+
+# Standalone runs use a private .env copy; only .env-example belongs in git.
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/

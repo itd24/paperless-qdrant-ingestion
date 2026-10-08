@@ -1,0 +1,25 @@
+# Ingestion mapping: Paperless tags -> Qdrant memory domain.
+#
+# Your Paperless documents are personal/family records (medical letters,
+# receipts, financial papers, ...) and don't cleanly belong to a single
+# platform domain — so everything lands in `personal` by default. Original
+# Paperless tags/correspondent/document type are preserved as payload metadata
+# on every chunk, so you can still filter within `personal` later (e.g. "only
+# medical-tagged chunks") without having to force a rigid taxonomy up front.
+#
+# Use tag_overrides only for the rare document that should actually be visible
+# to a specific platform profile's domain instead of `personal` — e.g. a
+# freelance invoice you want the `finance` profile to see directly.
+
+default_domain: personal
+
+tag_overrides:
+  # paperless_tag_name: target_domain
+  # work: dev
+  # freelance-invoice: finance
+
+# Documents carrying any of these Paperless tags are skipped entirely — never
+# embedded, never written to Qdrant. Useful for an "inbox/unprocessed" tag
+# you use in Paperless itself before documents are properly filed.
+exclude_tags:
+  - inbox-unprocessed

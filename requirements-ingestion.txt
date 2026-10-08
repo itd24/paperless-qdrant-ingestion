@@ -1,0 +1,16 @@
+# Document ingestion pipeline dependencies.
+# Install into a dedicated virtualenv:
+# py -m venv .venv && .venv\Scripts\activate && pip install -r requirements-ingestion.txt
+#
+# Pinned for reproducibility. tokenizers and PyYAML pins specifically require
+# versions with prebuilt Windows wheels for your Python version - if you're
+# on a very new Python release (e.g. 3.14) and a future bump of these pins
+# fails to build with an MSVC error, check https://pypi.org/project/<pkg>/#files
+# for a newer pin with a win_amd64 wheel for your cpXXX tag before assuming
+# you need Visual C++ Build Tools installed.
+
+httpx==0.27.2
+tokenizers==0.23.1
+qdrant-client==1.19.0
+python-dotenv==1.0.1
+PyYAML==6.0.3

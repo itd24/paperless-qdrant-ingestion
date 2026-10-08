@@ -1,0 +1,35 @@
+# Paperless-ngx -> Qdrant ingestion worker.
+#
+# One-shot job, NOT a long-running service: no restart policy and no cron
+# inside the image. Run it explicitly (host cron, shell, task scheduler):
+#
+#   docker compose --env-file ../homeagents-core/.env -f document-ingestion.yml run --rm paperless-ingestion
+#
+# It joins the existing ai-platform-net network and talks to the Qdrant and
+# TEI services already defined in core/memory.yml by their service names
+# (qdrant:6333, embeddings:80). Those services are NOT redefined here.
+services:
+  paperless-ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: paperless-ingestion:latest
+    container_name: paperless-ingestion
+    networks: [ai-platform-net]
+    environment:
+      PAPERLESS_URL: ${PAPERLESS_URL}
+      PAPERLESS_API_TOKEN: ${PAPERLESS_API_TOKEN}
+      QDRANT_URL: http://qdrant:6333
+      TEI_URL: http://embeddings:80
+      COLLECTION_NAME: ${COLLECTION_NAME:-memory}
+      EMBEDDINGS_MODEL: ${EMBEDDINGS_MODEL:-BAAI/bge-m3}
+      STATE_FILE: /app/data/ingestion-state.json
+      INGESTION_MAP_FILE: /app/config/ingestion-map.yaml
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    volumes:
+      - ./config:/app/config:ro
+      - ./data:/app/data
+
+networks:
+  ai-platform-net:
+    external: true
